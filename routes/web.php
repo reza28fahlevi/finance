@@ -10,6 +10,7 @@ use App\Http\Controllers\JournalTemplateController;
 use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\PeriodController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
@@ -110,6 +111,12 @@ Route::middleware('auth')->group(function () {
             Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
             Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
             Route::put('users/{user}/password', [UserController::class, 'resetPassword'])->name('users.password');
+        });
+
+        Route::middleware('can:roles.manage')->group(function () {
+            Route::get('roles', [RolePermissionController::class, 'edit'])->name('roles');
+            Route::put('roles', [RolePermissionController::class, 'update'])->name('roles.update');
+            Route::post('roles/reset', [RolePermissionController::class, 'reset'])->name('roles.reset');
         });
 
         Route::get('audit-logs', AuditLogController::class)->middleware('can:audit.view')->name('audit');

@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Enums\Role;
 use App\Models\AccountingPeriod;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Support\Permissions;
 use App\Support\Settings;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(Settings::class);
+        $this->app->singleton(Permissions::class);
     }
 
     /**
@@ -33,8 +34,8 @@ class AppServiceProvider extends ServiceProvider
         Model::preventSilentlyDiscardingAttributes(! $this->app->isProduction());
         Paginator::defaultView('components.pagination');
 
-        // RBAC: satu Gate per permission sesuai matriks akses (App\Enums\Role::permissions()).
-        foreach (Role::allPermissions() as $permission) {
+        // RBAC: satu Gate per permission; matriks aktif diatur di Pengaturan → Role & Permission.
+        foreach (Permissions::keys() as $permission) {
             Gate::define($permission, fn (User $user) => $user->hasPermission($permission));
         }
 

@@ -74,7 +74,7 @@ class EnumRulesTest extends TestCase
     #[DataProvider('permissionMatrix')]
     public function test_role_permission_matrix(Role $role, string $permission, bool $expected): void
     {
-        $this->assertSame($expected, $role->allows($permission));
+        $this->assertSame($expected, $role->defaultAllows($permission));
     }
 
     public function test_default_normal_balance_per_account_type(): void

@@ -2,15 +2,21 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Transaction;
 use App\Support\Settings;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class TransactionRequest extends FormRequest
 {
+    /** Otorisasi dicek sebelum validasi agar pengguna tanpa hak akses langsung mendapat 403. */
     public function authorize(): bool
     {
-        return true; // otorisasi dilakukan di controller via policy
+        $transaction = $this->route('transaction');
+
+        return $transaction instanceof Transaction
+            ? $this->user()->can('update', $transaction)
+            : $this->user()->can('create', Transaction::class);
     }
 
     /** @return array<string, mixed> */

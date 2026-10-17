@@ -67,9 +67,10 @@ class Navigation
                 ],
             ],
             [
-                'label' => 'Pengaturan', 'icon' => 'settings', 'active' => 'settings.*', 'can' => ['users.manage', 'audit.view', 'settings.manage'],
+                'label' => 'Pengaturan', 'icon' => 'settings', 'active' => 'settings.*', 'can' => ['users.manage', 'roles.manage', 'audit.view', 'settings.manage'],
                 'children' => array_values(array_filter([
                     $user->hasPermission('users.manage') ? ['label' => 'Pengguna', 'route' => 'settings.users.index', 'active' => 'settings.users.*'] : null,
+                    $user->hasPermission('roles.manage') ? ['label' => 'Role & Permission', 'route' => 'settings.roles', 'active' => 'settings.roles*'] : null,
                     $user->hasPermission('audit.view') ? ['label' => 'Audit Log', 'route' => 'settings.audit', 'active' => 'settings.audit'] : null,
                     $user->hasPermission('settings.manage') ? ['label' => 'Pengaturan Umum', 'route' => 'settings.general', 'active' => 'settings.general'] : null,
                 ])),

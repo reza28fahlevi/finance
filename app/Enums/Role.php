@@ -29,17 +29,19 @@ enum Role: string
     }
 
     /**
-     * Hak akses per peran (RANCANGAN.md 10.4 Matriks Akses Menu).
+     * Hak akses DEFAULT per peran (RANCANGAN.md 10.4 Matriks Akses Menu).
+     * Hak akses aktif disimpan di tabel role_permissions dan dapat diubah lewat
+     * menu Pengaturan → Role & Permission (lihat App\Support\Permissions).
      *
      * @return list<string>
      */
-    public function permissions(): array
+    public function defaultPermissions(): array
     {
         return match ($this) {
             self::Admin => [
                 'master.view', 'master.manage', 'period.close', 'period.reopen',
                 'transaction.view', 'journal.view', 'gl.view',
-                'users.manage', 'audit.view', 'settings.manage',
+                'users.manage', 'roles.manage', 'audit.view', 'settings.manage',
             ],
             self::Staff => [
                 'master.view', 'transaction.view', 'transaction.manage',
@@ -59,17 +61,8 @@ enum Role: string
         };
     }
 
-    public function allows(string $permission): bool
+    public function defaultAllows(string $permission): bool
     {
-        return in_array($permission, $this->permissions(), true);
-    }
-
-    /** @return list<string> */
-    public static function allPermissions(): array
-    {
-        return array_values(array_unique(array_merge(...array_map(
-            fn (self $role) => $role->permissions(),
-            self::cases(),
-        ))));
+        return in_array($permission, $this->defaultPermissions(), true);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\Role;
 use App\Models\Concerns\Auditable;
+use App\Support\Permissions;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -39,7 +40,7 @@ class User extends Authenticatable
 
     public function hasPermission(string $permission): bool
     {
-        return $this->is_active && $this->role->allows($permission);
+        return $this->is_active && app(Permissions::class)->allows($this->role, $permission);
     }
 
     public function isChecker(): bool

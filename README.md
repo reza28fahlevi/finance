@@ -18,7 +18,8 @@ Aplikasi akuntansi monolith **Laravel 13** yang mengalirkan data dari input tran
 
 ## 1. Instalasi lokal
 
-Prasyarat: PHP ≥ 8.3 (ekstensi `pdo_mysql`, `bcmath`, `intl`, `mbstring`, `fileinfo`), Composer 2, MySQL 8, **Node.js ≥ 20.19** (untuk build aset Vite 8).
+Prasyarat: PHP ≥ 8.3 (ekstensi `pdo_mysql`, `bcmath`, `intl`, `mbstring`, `fileinfo`), Composer 2, MySQL ≥ 8.0.16, **Node.js ≥ 20.19** (untuk build aset Vite 8).
+Requirement lengkap + panduan Laragon / server produksi / Docker: **[docs/INSTALASI.md](docs/INSTALASI.md)**. Cek kesiapan server dengan `php artisan finance:check`.
 
 ```bash
 composer install
@@ -44,7 +45,7 @@ Semua akun memakai password **`password`**. Ganti password, atau nonaktifkan aku
 
 | Peran | Email | Bisa |
 |---|---|---|
-| Admin | `admin@finance.test` | Kelola COA, periode, template jurnal, pengguna, pengaturan umum; buka kembali periode |
+| Admin | `admin@finance.test` | Kelola COA, periode, template jurnal, pengguna, **Role & Permission**, pengaturan umum; buka kembali periode |
 | Staff Finance (Maker) | `staff@finance.test`, `staff2@finance.test` | Input transaksi + lampiran, submit, revisi, batalkan |
 | Supervisor (Checker) | `supervisor@finance.test` | Approve/Reject (≤ ambang bila approval bertingkat aktif) |
 | Manager Finance (Checker) | `manager@finance.test` | Approve/Reject semua nominal |
@@ -90,7 +91,7 @@ Test memakai database MySQL **`finance_db_test`** (lihat `phpunit.xml`).
 
 ```bash
 mysql -uroot -e "CREATE DATABASE finance_db_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
-php artisan test                       # 190 test (unit + feature)
+php artisan test                       # 201 test (unit + feature)
 php artisan test --testsuite=Unit
 php artisan test --testsuite=Feature
 ```
@@ -184,7 +185,7 @@ Simpan salinan backup di luar server (offsite), dan uji restore secara berkala.
 |---|---|
 | `app/Enums` | Role (+ matriks permission), tipe/status transaksi, status/sumber jurnal, tipe akun |
 | `app/Services` | `TransactionService`, `AttachmentService`, `ApprovalService`, `JournalService`, `PostingService`, `LedgerService`, `PeriodService`, `SequenceService`, `AuditLogger` |
-| `app/Support` | `Money` (aritmetika uang bcmath), `Settings` (Pengaturan Umum), `Navigation` (menu per peran) |
+| `app/Support` | `Money` (aritmetika uang bcmath), `Settings` (Pengaturan Umum), `Permissions` (hak akses per peran, tabel `role_permissions`), `Navigation` (menu per peran) |
 | `app/Policies`, `app/Providers/AppServiceProvider.php` | RBAC: Gate per permission + `TransactionPolicy` |
 | `app/Http/Controllers` | Controller per modul (Master Data, Transaksi, Approval, Jurnal, GL, Pengaturan) |
 | `database/migrations` | Skema sesuai ERD (RANCANGAN.md 6) + CHECK constraint `journal_lines` |

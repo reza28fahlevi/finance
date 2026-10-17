@@ -38,6 +38,7 @@ class AccessControlTest extends TestCase
             'Ringkasan saldo' => ['/gl/summary',             true,  false, true,  true,  true,  true],
             'Trial balance' => ['/gl/trial-balance',         true,  false, true,  true,  true,  true],
             'Pengguna' => ['/settings/users',                true,  false, false, false, false, false],
+            'Role & Permission' => ['/settings/roles',      true,  false, false, false, false, false],
             'Audit log' => ['/settings/audit-logs',          true,  false, false, false, false, true],
             'Pengaturan umum' => ['/settings/general',       true,  false, false, false, false, false],
         ];
