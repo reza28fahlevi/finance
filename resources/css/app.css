@@ -1,0 +1,228 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/plus-jakarta-sans';
+@import 'material-symbols/outlined.css';
+
+@plugin '@tailwindcss/forms' {
+    strategy: 'base';
+}
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views';
+
+/* Token tema "Velvet Glass Executive" (template_mockup/velvet_glass_executive_dashboard/DESIGN.md) */
+@theme {
+    --font-sans: 'Plus Jakarta Sans Variable', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    --color-background: #1f0e19;
+    --color-surface: #1f0e19;
+    --color-surface-dim: #1f0e19;
+    --color-surface-bright: #48333f;
+    --color-surface-container-lowest: #190913;
+    --color-surface-container-low: #281621;
+    --color-surface-container: #2c1a25;
+    --color-surface-container-high: #382430;
+    --color-surface-container-highest: #432f3b;
+    --color-surface-variant: #432f3b;
+    --color-on-background: #fadaea;
+    --color-on-surface: #fadaea;
+    --color-on-surface-variant: #dac1bc;
+    --color-outline: #a28c88;
+    --color-outline-variant: #55433f;
+    --color-primary: #ffbbaf;
+    --color-on-primary: #5b1a10;
+    --color-primary-container: #fa9583;
+    --color-on-primary-container: #742c20;
+    --color-secondary: #ffb0cc;
+    --color-on-secondary: #640038;
+    --color-secondary-container: #841b50;
+    --color-on-secondary-container: #ff94be;
+    --color-tertiary: #e9c3bc;
+    --color-on-tertiary: #422a26;
+    --color-tertiary-container: #cca8a2;
+    --color-error: #ffb4ab;
+    --color-on-error: #690005;
+    --color-error-container: #93000a;
+    --color-on-error-container: #ffdad6;
+    --color-success: #a8e6b8;
+    --color-success-container: #1f4d2e;
+
+    --text-display-lg: 48px;
+    --text-display-lg--line-height: 56px;
+    --text-display-lg--letter-spacing: -0.03em;
+    --text-display-lg--font-weight: 700;
+    --text-display-lg-mobile: 32px;
+    --text-display-lg-mobile--line-height: 40px;
+    --text-display-lg-mobile--letter-spacing: -0.02em;
+    --text-display-lg-mobile--font-weight: 700;
+    --text-headline-lg-mobile: 24px;
+    --text-headline-lg-mobile--line-height: 32px;
+    --text-headline-lg-mobile--letter-spacing: -0.01em;
+    --text-headline-lg-mobile--font-weight: 600;
+    --text-headline-lg: 32px;
+    --text-headline-lg--line-height: 40px;
+    --text-headline-lg--letter-spacing: -0.02em;
+    --text-headline-lg--font-weight: 600;
+    --text-headline-md: 24px;
+    --text-headline-md--line-height: 32px;
+    --text-headline-md--letter-spacing: -0.015em;
+    --text-headline-md--font-weight: 600;
+    --text-headline-sm: 20px;
+    --text-headline-sm--line-height: 28px;
+    --text-headline-sm--letter-spacing: -0.01em;
+    --text-headline-sm--font-weight: 600;
+    --text-body-lg: 16px;
+    --text-body-lg--line-height: 24px;
+    --text-body-md: 14px;
+    --text-body-md--line-height: 20px;
+    --text-body-sm: 12px;
+    --text-body-sm--line-height: 18px;
+    --text-body-sm--letter-spacing: 0.01em;
+    --text-label-lg: 14px;
+    --text-label-lg--line-height: 20px;
+    --text-label-lg--letter-spacing: 0.01em;
+    --text-label-lg--font-weight: 600;
+    --text-label-md: 12px;
+    --text-label-md--line-height: 16px;
+    --text-label-md--letter-spacing: 0.02em;
+    --text-label-md--font-weight: 600;
+    --text-label-sm: 11px;
+    --text-label-sm--line-height: 14px;
+    --text-label-sm--letter-spacing: 0.04em;
+    --text-label-sm--font-weight: 700;
+
+    --spacing-gutter: 1.5rem;
+    --spacing-space-xs: 0.25rem;
+    --spacing-space-sm: 0.5rem;
+    --spacing-space-md: 1rem;
+    --spacing-space-lg: 1.5rem;
+    --spacing-space-xl: 2.5rem;
+}
+
+@layer base {
+    html {
+        color-scheme: dark;
+    }
+    body {
+        @apply bg-background text-body-md text-on-surface antialiased font-sans;
+        overscroll-behavior: none;
+    }
+    [x-cloak] {
+        display: none !important;
+    }
+    details > summary {
+        list-style: none;
+    }
+    details summary::-webkit-details-marker {
+        display: none;
+    }
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: rgba(255, 181, 167, 0.15);
+        border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+}
+
+@layer components {
+    .material-symbols-outlined {
+        font-size: 20px;
+        line-height: 1;
+    }
+
+    .glass-card {
+        @apply rounded-2xl bg-surface-container/60 backdrop-blur-xl shadow-xl;
+    }
+    .glass-panel {
+        @apply rounded-xl bg-surface-container-high/50;
+    }
+
+    .btn,
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger,
+    .btn-ghost {
+        @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-label-lg transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed;
+    }
+    .btn-primary {
+        @apply bg-gradient-to-r from-primary-container to-primary text-on-primary shadow-lg hover:shadow-primary-container/25 hover:scale-[1.02] active:scale-[0.98];
+    }
+    .btn-secondary {
+        @apply bg-surface-container-high/60 hover:bg-surface-container-highest text-on-surface backdrop-blur-xl shadow-md;
+    }
+    .btn-danger {
+        @apply bg-error-container/60 hover:bg-error-container text-on-error-container;
+    }
+    .btn-ghost {
+        @apply text-on-surface-variant hover:bg-white/5 hover:text-on-surface;
+    }
+    .btn-sm {
+        @apply px-3 py-1.5 rounded-lg text-label-sm;
+    }
+
+    .form-label {
+        @apply block mb-1.5 text-label-md text-on-surface-variant;
+    }
+    .form-input {
+        @apply w-full rounded-lg border border-primary/15 bg-surface-container-lowest/60 px-3 py-2 text-body-md text-on-surface placeholder:text-on-surface-variant/40 focus:border-primary-container focus:ring-3 focus:ring-primary-container/20 focus:outline-none;
+    }
+    .form-input option {
+        @apply bg-surface-container-low text-on-surface;
+    }
+    .form-check {
+        @apply rounded border-primary/30 bg-surface-container-lowest/50 text-primary-container focus:ring-primary-container/30;
+    }
+    .form-error {
+        @apply mt-1 text-body-sm text-error;
+    }
+
+    .badge {
+        @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-label-sm uppercase;
+    }
+    .badge-dot::before {
+        content: '';
+        @apply inline-block w-1.5 h-1.5 rounded-full bg-current;
+    }
+
+    .eyebrow {
+        @apply text-label-sm uppercase tracking-wider text-primary px-2 py-0.5 rounded-full bg-secondary-container/40;
+    }
+
+    .data-table {
+        @apply w-full text-left;
+    }
+    .data-table thead th {
+        @apply px-4 py-3 text-label-sm uppercase text-on-surface-variant/80 bg-surface-container-lowest/40 whitespace-nowrap;
+    }
+    .data-table tbody td {
+        @apply px-4 py-3 align-middle border-t border-primary/5;
+    }
+    .data-table tbody tr {
+        @apply transition-colors hover:bg-primary/[0.04];
+    }
+
+    .chip {
+        @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-label-md text-on-surface-variant bg-surface-container-high/50 hover:text-on-surface transition-all;
+    }
+    .chip-active {
+        @apply bg-primary-container text-on-primary-container;
+    }
+
+    .nav-link {
+        @apply flex items-center gap-2 px-4 py-2 rounded-lg text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all;
+    }
+    .subnav-link {
+        @apply block px-4 py-1.5 rounded-lg text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all;
+    }
+    /* Didefinisikan setelah nav-link & subnav-link agar warnanya menang. */
+    .nav-link-active,
+    .nav-link-active:hover {
+        @apply bg-primary-container text-on-primary-container font-bold;
+    }
+}

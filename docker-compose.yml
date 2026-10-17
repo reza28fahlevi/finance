@@ -1,0 +1,84 @@
+# Finance Shafa — deploy dengan Docker Compose
+#
+#   cp .env.docker.example .env.docker      # lalu isi APP_KEY, password DB, APP_URL
+#   docker compose build
+#   docker compose up -d                    # app + web + mysql
+#   docker compose --profile scheduler up -d   # + posting batch terjadwal (opsional)
+#
+# Aplikasi tersedia di http://localhost:${WEB_PORT:-8080}
+
+name: finance-shafa
+
+x-app: &app
+  image: finance-shafa-app:latest
+  env_file: .env.docker
+  restart: unless-stopped
+  volumes:
+    - attachments:/var/www/html/storage/app/private
+    - logs:/var/www/html/storage/logs
+  depends_on:
+    mysql:
+      condition: service_healthy
+
+services:
+  app:
+    <<: *app
+    build:
+      context: .
+      target: app
+    environment:
+      RUN_MIGRATIONS: "true"
+    healthcheck:
+      test: ["CMD-SHELL", "php-fpm -t >/dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  web:
+    image: finance-shafa-web:latest
+    build:
+      context: .
+      target: web
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    depends_on:
+      app:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/up >/dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    # MYSQL_DATABASE / MYSQL_USER / MYSQL_PASSWORD / MYSQL_ROOT_PASSWORD diambil dari .env.docker
+    # (sengaja tidak memakai interpolasi ${...} agar tidak tertimpa .env lokal Laravel).
+    env_file: .env.docker
+    environment:
+      TZ: Asia/Jakarta
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # Opsional: posting batch terjadwal (FINANCE_SCHEDULED_POSTING=true). Pengganti cron "schedule:run".
+  scheduler:
+    <<: *app
+    profiles: ["scheduler"]
+    command: ["php", "artisan", "schedule:work"]
+    depends_on:
+      app:
+        condition: service_started
+
+volumes:
+  mysql-data:
+  attachments:
+  logs:
